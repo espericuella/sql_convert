@@ -3,7 +3,7 @@ This is rewritten version to Python, original version located [here](https://git
 and was written in TypeScript
 
 Project using DDL CREATE TABLE definition will generate:
-* PostgreSQL functions ``_delete``, ``_get``, ``_list``, ``_save`` . 
+* PostgreSQL functions ``_delete``, ``_get``, ``_search``, ``_save`` . 
 * NestJS REST API with dto definition, service, controller and module template and basic E2E tests. 
 * WWW Angular module with: dto-s, service, routing, edit page and list page with pagination and basic filtering that is remembered
 
@@ -58,7 +58,7 @@ Main assumptions:
 It will create files in dist/sql directory with functions :
 * auth.user_delete(id integer)
 * auth.user_get(id integer)
-* auth.user_list(filter varchar) - filter is prepared for Angular Materials Server Side pagination
+* auth.user_search(filter varchar) - filter is prepared for Angular Materials Server Side pagination
 * auth.user_save(user varchar) - parameter is JSONB object cast on varchar. If id more than zero - will update data, else - will create new record.
 
 
@@ -67,8 +67,8 @@ It will create files in dist/sql directory with functions :
 Using Node.js Style Guide from https://github.com/airbnb/javascript and https://github.com/felixge/node-style-guide 
 
 It will generate files:
-* dist/api/dto/FilterItem.dto.ts - global definition for filter item, used in ListFilterRequest 
-* dist/api/dto/ListFilterRequest.dto.ts - global definition request for list api
+* dist/api/shared/dto/FilterItem.dto.ts - global definition for filter item, used in ListFilterRequest 
+* dist/api/shared/dto/ListFilterRequest.dto.ts - global definition request for list api
 * dist/api/customer/dto/User.dto.ts  - with type definition for user
 * dist/api/customer/dto/UserFilter.dto.ts - list filter. Example: ```{"filter": [{"field": "login", "value": "Joh%"}], "sort": ["login"], "page_size": 25, "page_index": 1, "sort_direction": "asc"}```
 * dist/api/customer/dto/UserListResponse.dto.ts  - response from list function with table count information and data array - filtered user table
