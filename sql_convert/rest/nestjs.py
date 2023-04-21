@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from sql_convert.interfaces.interfaces import FieldDefinition
+from sql_convert.includes.field_definition import FieldDefinition
 from sql_convert.common import capitalize, is_number, is_boolean, is_string, snake_to_camel, snake_to_dash, camel_to_kebab
 
 
@@ -324,7 +324,7 @@ export class {snake_to_camel(tbl_name)}Module {{}}
 
 
 # Generate whole api
-def generate_api(schema_name: str, tbl_name: str, field_array: List):
+def generate_nestjs_api(schema_name: str, tbl_name: str, field_array: List):
     # Create module directory
     generate_model_dto(schema_name, tbl_name, field_array)
 

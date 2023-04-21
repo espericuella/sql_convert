@@ -2,10 +2,20 @@ import sys
 import os
 import re
 import shutil
+import argparse
 from sql_convert.common import get_description
-from sql_convert.api import generate_api
-from sql_convert.sql import generate_sql
-from sql_convert.www import generate_angular_module
+from sql_convert.rest.nestjs import generate_nestjs_api
+from sql_convert.sql.pgsql import generate_pgsql
+from sql_convert.web.ng import generate_angular_module
+
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-b", "--backend", action="store_true", help="Destination backend rest api")
+parser.add_argument("-f", "--frontend", action="store_true", help="Destination frontend framework")
+parser.add_argument("-s", "--sql", action="store_true", help="Destination SQL language")
+parser.add_argument("<path_to_sql>", help="Path to SQL generation table")
+args = parser.parse_args()
+config = vars(args)
+print(config)
 
 # Remove dist directory if exists
 if os.path.exists('dist'):
@@ -70,8 +80,8 @@ if not schema_name:
     print('Table should have schema defined')
     sys.exit(-1)
 
-generate_api(schema_name, tbl_name, field_array)
+generate_nestjs_api(schema_name, tbl_name, field_array)
 
-generate_sql(schema_name, tbl_name, sequence_name, field_array)
+generate_pgsql(schema_name, tbl_name, sequence_name, field_array)
 
 generate_angular_module(schema_name, tbl_name, field_array)

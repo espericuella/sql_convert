@@ -1,5 +1,5 @@
 import re
-from sql_convert.interfaces.interfaces import FieldDefinition
+from sql_convert.includes.field_definition import FieldDefinition
 
 
 def camel_to_kebab(stroke: str) -> str:

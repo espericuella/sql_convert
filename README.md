@@ -12,20 +12,20 @@ Comments on table column is used for API description and labels for edits.
 Of course, this will not meet in 100% yours needs, but will speed up your development time.
 
 ## Usage
-! Important ! Python3 needed in your machine, you can download it [here](https://www.python.org/downloads/)
+! Important ! Python 3.10 or higher needed in your machine, you can download it [here](https://www.python.org/downloads/)
 
 * Before usage please change inside constants.py database username.
 
 *Usage:*
 ```
-py gen.py table.example.sql
+py gen.py table.generate.sql
 ```
 or
 ```
-python gen.py table.example.sql
+python gen.py table.generate.sql
 ```
 
-where **table.example.sql** is file with DDL table definition.
+where **table.generate.sql** is file with DDL table definition.
 
 ## Generation SQL
 
