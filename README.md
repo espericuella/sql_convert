@@ -20,9 +20,9 @@ Of course, this will not meet in 100% yours needs, but will speed up your develo
 ```
 py gen.py table.generate.sql [-b, -f, -s]
 ```
-or
+or this command for help
 ```
-py gen.py -h # for help
+py gen.py -h
 ```
 
 where **table.generate.sql** is file with DDL table definition.
