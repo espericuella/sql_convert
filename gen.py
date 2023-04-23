@@ -9,36 +9,36 @@ from sql_convert.sql.pgsql import generate_pgsql
 from sql_convert.web.ng import generate_angular_module
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("-b", "--backend", action="store_true", help="Destination backend rest api")
-parser.add_argument("-f", "--frontend", action="store_true", help="Destination frontend framework")
+parser.add_argument("-b", "--rest", action="store_true", help="Destination backend rest api")
+parser.add_argument("-f", "--web", action="store_true", help="Destination frontend framework")
 parser.add_argument("-s", "--sql", action="store_true", help="Destination SQL language")
 parser.add_argument("<path_to_sql>", help="Path to SQL generation table")
 args = parser.parse_args()
 config = vars(args)
-print(config)
 
 # Remove dist directory if exists
 if os.path.exists('dist'):
     shutil.rmtree('dist', ignore_errors=True)
 
-# Get command line arguments
-args = sys.argv[1:]
-if not args:
+# Check if sql table file defined in command line arguments
+sql_file_path = config['<path_to_sql>']
+
+if not config['<path_to_sql>']:
     print('Add SQL file with table definition')
     sys.exit(-1)
 
 # Check if the input file exists
-if not os.path.exists(args[0]):
+if not os.path.exists(sql_file_path):
     print('File not exist')
     sys.exit(-1)
 
 # Check if the input file is a SQL file
-if not args[0].upper().endswith('.SQL'):
+if not sql_file_path.upper().endswith('.SQL'):
     print('File is not SQL file')
     sys.exit(-1)
 
 # Read the input SQL file
-with open(args[0], 'r') as f:
+with open(sql_file_path, 'r') as f:
     sql_file = f.read()
 
 # Analyze and process SQL table definition
@@ -80,8 +80,18 @@ if not schema_name:
     print('Table should have schema defined')
     sys.exit(-1)
 
-generate_nestjs_api(schema_name, tbl_name, field_array)
+if config['sql'] is False and config['web'] is False and config['rest'] is False:
+    print('No options selected. Please select an option to generate [-b, -f, -s]')
+    sys.exit(-1)
 
-generate_pgsql(schema_name, tbl_name, sequence_name, field_array)
+if config['rest'] is True:
+    generate_nestjs_api(schema_name, tbl_name, field_array)
+    print('NestJS API successfully generated')
 
-generate_angular_module(schema_name, tbl_name, field_array)
+if config['web'] is True:
+    generate_angular_module(schema_name, tbl_name, field_array)
+    print('Angular module successfully generated')
+
+if config['sql'] is True:
+    generate_pgsql(schema_name, tbl_name, sequence_name, field_array)
+    print('PostgreSQL functions successfully generated')
