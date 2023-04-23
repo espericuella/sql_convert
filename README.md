@@ -18,11 +18,11 @@ Of course, this will not meet in 100% yours needs, but will speed up your develo
 
 *Usage:*
 ```
-py gen.py table.generate.sql
+py gen.py table.generate.sql [-b, -f, -s]
 ```
 or
 ```
-python gen.py table.generate.sql
+py gen.py -h # for help
 ```
 
 where **table.generate.sql** is file with DDL table definition.
