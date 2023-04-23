@@ -66,8 +66,8 @@ $BODY$
 COMMENT ON FUNCTION {get_fnc_name}(integer) IS 'Get {tbl_name}';
 ALTER FUNCTION {get_fnc_name}(integer) OWNER TO {db_owner};
 GRANT EXECUTE ON FUNCTION {get_fnc_name}(integer) TO {db_user};"""
-    file_path = os.path.join('dist', '', f'fnc_{get_fnc_name}.sql')
-    os.makedirs(os.path.join('dist', ''), exist_ok=True)
+    file_path = os.path.join('dist', 'sql', f'fnc_{get_fnc_name}.sql')
+    os.makedirs(os.path.join('dist', 'sql'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(sql_get)
 
@@ -101,8 +101,8 @@ $BODY$
 COMMENT ON FUNCTION {del_fnc_name}(integer) IS 'Delete {tbl_name}';
 ALTER FUNCTION {del_fnc_name}(integer) OWNER TO {db_owner};
 GRANT EXECUTE ON FUNCTION {del_fnc_name}(integer) TO {db_user};"""
-    file_path = os.path.join('dist', '', f'fnc_{del_fnc_name}.sql')
-    os.makedirs(os.path.join('dist', ''), exist_ok=True)
+    file_path = os.path.join('dist', 'sql', f'fnc_{del_fnc_name}.sql')
+    os.makedirs(os.path.join('dist', 'sql'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(sql_delete)
 
@@ -196,8 +196,8 @@ $BODY$
 COMMENT ON FUNCTION {search_fnc_name}(character varying) IS '{tbl_name.capitalize()} list';
 ALTER FUNCTION {search_fnc_name}(character varying) OWNER TO {db_owner};
 GRANT EXECUTE ON FUNCTION {search_fnc_name}(character varying) TO {db_user};"""
-    file_path = os.path.join('dist', '', f'fnc_{search_fnc_name}.sql')
-    os.makedirs(os.path.join('dist', ''), exist_ok=True)
+    file_path = os.path.join('dist', 'sql', f'fnc_{search_fnc_name}.sql')
+    os.makedirs(os.path.join('dist', 'sql'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(sql_search)
 
@@ -258,8 +258,8 @@ $BODY$
                      COST 100;
 ALTER FUNCTION {save_fnc_name}(character varying) OWNER TO {db_owner};
 GRANT EXECUTE ON FUNCTION {save_fnc_name}(character varying) TO {db_user};"""
-    file_path = os.path.join('dist', '', f'fnc_{save_fnc_name}.sql')
-    os.makedirs(os.path.join('dist', ''), exist_ok=True)
+    file_path = os.path.join('dist', 'sql', f'fnc_{save_fnc_name}.sql')
+    os.makedirs(os.path.join('dist', 'sql'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(sql_save)
 

@@ -2,7 +2,7 @@ import os
 from typing import List
 
 from sql_convert.includes.field_definition import FieldDefinition
-from sql_convert.common import capitalize, is_number, is_boolean, is_string, snake_to_camel, snake_to_dash, camel_to_kebab
+from sql_convert.common import capitalize, is_number, is_boolean, is_string, snake_to_camel, snake_to_dash
 
 
 # Generate API NestJS templates
@@ -32,10 +32,10 @@ export class {dto_name} {{\n"""
     type: '{ts_type}',
     example: '',
   }})\n"""
-    ts_dto += f' {item["field"]}: {ts_type}\n\n'
+        ts_dto += f' {item["field"]}: {ts_type}\n\n'
     ts_dto += '}'
-    file_path = os.path.join('dist', 'api', snake_to_dash(tbl_name), 'implement', f'{camel_to_kebab(snake_to_camel(tbl_name))}.dto.ts')
-    os.makedirs(os.path.join('dist', 'api', snake_to_dash(tbl_name), 'implement'), exist_ok=True)
+    file_path = os.path.join('dist', 'api', snake_to_dash(tbl_name), 'dto', f'{snake_to_dash(tbl_name)}.dto.ts')
+    os.makedirs(os.path.join('dist', 'api', snake_to_dash(tbl_name), 'dto'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(ts_dto)
 
@@ -46,6 +46,7 @@ def generate_filter_item_dto():
     ts_filter_dto = (
         "import { ApiProperty } from '@nestjs/swagger';\n"
         "import { IsString } from 'class-validator';\n"
+        
         "export class FilterItemDto {\n"
         "  @IsString()\n"
         "  @ApiProperty({\n"
@@ -63,8 +64,8 @@ def generate_filter_item_dto():
         "  value: string;\n"
         "}\n"
     )
-    file_path = os.path.join('dist', 'api', 'shared', 'implement', 'filter-item.dto.ts')
-    os.makedirs(os.path.join('dist', 'api', 'shared', 'implement'), exist_ok=True)
+    file_path = os.path.join('dist', 'api', 'shared', 'dto', 'filter-item.dto.ts')
+    os.makedirs(os.path.join('dist', 'api', 'shared', 'dto'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(ts_filter_dto)
 
@@ -74,6 +75,7 @@ def generate_list_filter_request_dto():
     ts_item = """import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 import { FilterItemDto } from './FilterItem.dto';
+
 export class ListFilterRequestDto {
   @IsArray()
   @ApiProperty({
@@ -123,8 +125,8 @@ export class ListFilterRequestDto {
   })
   page_size: number;
 }"""
-    file_path = os.path.join('dist', 'api', 'shared', 'implement', 'list-filter-request.dto.ts')
-    os.makedirs(os.path.join('dist', 'api', 'shared', 'implement'), exist_ok=True)
+    file_path = os.path.join('dist', 'api', 'shared', 'dto', 'list-filter-request.dto.ts')
+    os.makedirs(os.path.join('dist', 'api', 'shared', 'dto'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(ts_item)
 
@@ -133,7 +135,8 @@ export class ListFilterRequestDto {
 def generate_list_response_dto(schema_name: str, tbl_name: str):
     ts_list_response_dto = f"""import {{ IsNumber }} from 'class-validator';
 import {{ ApiProperty }} from '@nestjs/swagger';
-import {{ {snake_to_camel(tbl_name)}Dto }} from './{snake_to_camel(tbl_name)}.dto';
+import {{ {snake_to_camel(tbl_name)}Dto }} from './{snake_to_camel(tbl_name)}.dto';\
+
 export class {snake_to_camel(tbl_name)}ListResponseDto {{
   @IsNumber()
   @ApiProperty({{
@@ -142,6 +145,7 @@ export class {snake_to_camel(tbl_name)}ListResponseDto {{
     example: '1000',
   }})
   cnt: number;
+  
   @ApiProperty({{
     description: 'Response item array',
     type: [{snake_to_camel(tbl_name)}Dto],
@@ -149,8 +153,8 @@ export class {snake_to_camel(tbl_name)}ListResponseDto {{
   }})
   data: {snake_to_camel(tbl_name)}Dto[];
 }}"""
-    file_path = os.path.join('dist', 'api', snake_to_dash(tbl_name), 'implement', f'{camel_to_kebab(snake_to_camel(tbl_name))}list-response.dto.ts')
-    os.makedirs(os.path.join('dist', 'api', snake_to_dash(tbl_name), 'implement'), exist_ok=True)
+    file_path = os.path.join('dist', 'api', snake_to_dash(tbl_name), 'dto', f'{snake_to_dash(tbl_name)}-list-response.dto.ts')
+    os.makedirs(os.path.join('dist', 'api', snake_to_dash(tbl_name), 'dto'), exist_ok=True)
     with open(file_path, 'w') as file:
         file.write(ts_list_response_dto)
 
@@ -163,9 +167,9 @@ import {{
 }} from '@nestjs/common';
 import {{ Observable }} from 'rxjs';
 import {{ AuthGuard }} from '../shared/guards/auth.guard';
-import {{ {snake_to_camel(tbl_name)}Dto }} from './implement/{snake_to_camel(tbl_name)}.dto';
-import {{ {snake_to_camel(tbl_name)}ListResponseDto }} from './implement/{camel_to_kebab(snake_to_camel(tbl_name))}list-response.dto';
-import {{ ListFilterRequestDto }} from '../shared/implement/list-filter-request.dto';
+import {{ {snake_to_camel(tbl_name)}Dto }} from './dto/{snake_to_camel(tbl_name)}.dto';
+import {{ {snake_to_camel(tbl_name)}ListResponseDto }} from './dto/{snake_to_dash(tbl_name)}-list-response.dto';
+import {{ ListFilterRequestDto }} from '../shared/dto/list-filter-request.dto';
 import {{ {snake_to_camel(tbl_name)}Service }} from './{snake_to_dash(tbl_name)}.service';\n
 @ApiTags('{tbl_name}')
 @ApiBearerAuth('Bearer')
@@ -224,9 +228,9 @@ export class {snake_to_camel(tbl_name)}Controller {{
 def generate_service(schema_name: str, tbl_name: str):
     ts_service = f"""import {{ HttpException, Injectable }} from '@nestjs/common';
 import {{ Observable }} from 'rxjs';
-import {{ {snake_to_camel(tbl_name)}Dto }} from './implement/{camel_to_kebab(snake_to_camel(tbl_name))}.dto';
-import {{ {snake_to_camel(tbl_name)}ListResponseDto }} from './implement/{camel_to_kebab(snake_to_camel(tbl_name))}list-response.dto';
-import {{ ListFilterRequestDto }} from '../shared/implement/list-filter-request.dto';
+import {{ {snake_to_camel(tbl_name)}Dto }} from './dto/{snake_to_dash(tbl_name)}.dto';
+import {{ {snake_to_camel(tbl_name)}ListResponseDto }} from './dto/{snake_to_dash(tbl_name)}-list-response.dto';
+import {{ ListFilterRequestDto }} from '../shared/dto/list-filter-request.dto';
 import {{ DatabaseWorker }} from '../shared/db.worker.service';
 import {{ AppLogger }} from '../shared/app-logger';
 @Injectable()
